@@ -77,7 +77,11 @@ func (discord *Discord) DeleteModules() {
 		if file.Name() == "discord_desktop_core" { // exclude module in order to be able to start the updater
 			continue
 		}
-		discord.mustRemoveFromModules(file.Name())
+
+		 if err := os.RemoveAll(path.Join(discord.modulesDir, file.Name())); err != nil {
+		 	fmt.Println("Is discord still running?")
+		 	log.Fatalln(err)
+		 }
 	}
 	discord.mustRemoveFromModules("pending")
 	discord.mustRemoveFromModules("installed.json")
